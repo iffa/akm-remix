@@ -1,0 +1,34 @@
+{
+  "developedBy": "Developed by <span>{{developer}}</span>",
+  "publishedBy": "Published by <span>{{publisher}}</span>",
+
+  "bestOfferTitle": "Best offer",
+  "availableOffers": "Available offers",
+  "metacriticScore": "Metacritic score",
+
+  "bestOffer": "<span>{{price}}</span> from {{store}}",
+  "bestOfferVoucher": ", with code <span>{{voucher}}</span>",
+
+  "offers": "<span>{{count}}</span> offer",
+  "offers_plural": "<span>{{count}}</span> offers",
+
+  "fromStores": " from <span>{{count}}</span> store",
+  "fromStores_plural": " from <span>{{count}}</span> stores",
+
+  "rating": "<span>{{rating}}%</span> rating from <span>{{votes}}</span> votes",
+
+  "platformAndEdition": "Platform & edition",
+  "store": "Store",
+  "priceAndVoucher": "Price & voucher",
+  "purchase": "Purchase",
+
+  "platforms": "Platforms",
+  "editions": "Editions",
+  "stores": "Stores",
+  "selectAll": "Select/unselect all",
+
+  "seo": {
+    "title": "AKM | {{product}}",
+    "description": "Buy game key for {{product}} affordably"
+  }
+}
