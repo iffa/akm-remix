@@ -1,17 +1,12 @@
+import { LoaderArgs } from "@remix-run/node";
 import { useTranslation } from "react-i18next";
-import {
-  Form,
-  LoaderFunction,
-  MetaFunction,
-  useLoaderData,
-  useSearchParams,
-} from "remix";
+import { GoSearch } from "react-icons/go";
+import { Form, MetaFunction, useLoaderData, useSearchParams } from "remix";
 import { SearchResult } from "../components/search/SearchResult";
 import { Product } from "../lib/model/product.model";
 import { getProducts } from "../lib/products";
-import { GoSearch } from "react-icons/go";
 
-export const loader: LoaderFunction = async ({ request, params }) => {
+export const loader = async ({ request, params }: LoaderArgs) => {
   const url = new URL(request.url);
   const query = url.searchParams.get("query") || undefined;
   return getProducts({ query });
