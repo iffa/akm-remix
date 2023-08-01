@@ -1,16 +1,16 @@
-import { LoaderFunction, MetaFunction } from "@remix-run/node";
+import { LoaderFunction, V2_MetaFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { ProductDetailsCard } from "~/components/product/ProductDetailsCard";
-import ProductOfferTable from "../../components/product/ProductOfferTable";
-import ProductOfferTableFilters from "../../components/product/ProductOfferTableFilters";
-import { GetProductResponse, getProduct } from "../../lib/products";
+import ProductOfferTable from "../components/product/ProductOfferTable";
+import ProductOfferTableFilters from "../components/product/ProductOfferTableFilters";
+import { GetProductResponse, getProduct } from "../lib/products";
 
-export const meta: MetaFunction = ({
+export const meta: V2_MetaFunction = ({
   data,
 }: {
   data: GetProductResponse | undefined;
 }) => {
-  return { title: `AKM - ${data?.product.name}` };
+  return [{ title: `AKM - ${data?.product.name}` }];
 };
 
 export const loader: LoaderFunction = async ({ request, params }) => {

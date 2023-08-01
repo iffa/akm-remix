@@ -1,4 +1,4 @@
-import { LoaderFunction, MetaFunction } from "@remix-run/node";
+import { LoaderFunction, V2_MetaFunction } from "@remix-run/node";
 import { Form, useLoaderData, useSearchParams } from "@remix-run/react";
 import { useTranslation } from "react-i18next";
 import { GoSearch } from "react-icons/go";
@@ -12,8 +12,8 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   return getProducts({ query });
 };
 
-export const meta: MetaFunction = () => {
-  return { title: "AKM - Find affordable game keys" };
+export const meta: V2_MetaFunction = () => {
+  return [{ title: "AKM - Find affordable game keys" }];
 };
 
 export default function Index() {
