@@ -1,6 +1,6 @@
 import { LoaderFunction, V2_MetaFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { ProductDetailsCard } from "~/components/product/ProductDetailsCard";
+import { ProductDetailsCard } from "../components/product/ProductDetailsCard";
 import ProductOfferTable from "../components/product/ProductOfferTable";
 import ProductOfferTableFilters from "../components/product/ProductOfferTableFilters";
 import { GetProductResponse, getProduct } from "../lib/products";
