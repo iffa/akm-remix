@@ -1,4 +1,4 @@
-import { Link } from "remix";
+import { Link } from "@remix-run/react";
 import { AvailablePlatform } from "../../lib/model/product.model";
 
 function ProductPlatformPill({

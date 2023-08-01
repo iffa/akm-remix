@@ -1,5 +1,5 @@
+import { Form, useSearchParams } from "@remix-run/react";
 import { useTranslation } from "react-i18next";
-import { Form, useSearchParams } from "remix";
 import { Edition } from "../../lib/model/edition.model";
 import { Region } from "../../lib/model/region.model";
 import ProductFilterCheckbox from "./ProductFilterCheckbox";

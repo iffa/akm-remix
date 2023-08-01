@@ -1,4 +1,4 @@
-import { Link } from "remix";
+import { Link } from "@remix-run/react";
 import { Product } from "../../lib/model/product.model";
 import { getFormattedPrice } from "../../utils/number-utils";
 

@@ -1,13 +1,9 @@
-import {
-  ErrorBoundaryComponent,
-  LoaderFunction,
-  MetaFunction,
-  useLoaderData,
-} from "remix";
+import { LoaderFunction, MetaFunction } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
 import ProductDetailsCard from "../../components/product/ProductDetailsCard";
 import ProductOfferTable from "../../components/product/ProductOfferTable";
 import ProductOfferTableFilters from "../../components/product/ProductOfferTableFilters";
-import { getProduct, GetProductResponse } from "../../lib/products";
+import { GetProductResponse, getProduct } from "../../lib/products";
 
 export const meta: MetaFunction = ({
   data,
@@ -28,7 +24,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   return getProduct({ id: params.slug, includeEditions, includeLaunchers });
 };
 
-export const ErrorBoundary: ErrorBoundaryComponent = ({ error }) => {
+export const ErrorBoundary = () => {
   return (
     <div className="container mx-auto space-y-8 px-4">
       <h1 className="text-xl leading-6 font-medium text-gray-900">
