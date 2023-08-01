@@ -1,6 +1,6 @@
 import { LoaderFunction, MetaFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import ProductDetailsCard from "../../components/product/ProductDetailsCard";
+import { ProductDetailsCard } from "~/components/product/ProductDetailsCard";
 import ProductOfferTable from "../../components/product/ProductOfferTable";
 import ProductOfferTableFilters from "../../components/product/ProductOfferTableFilters";
 import { GetProductResponse, getProduct } from "../../lib/products";
@@ -15,13 +15,23 @@ export const meta: MetaFunction = ({
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   const url = new URL(request.url);
+
   const includeLaunchers = url.searchParams.has("launcher")
     ? url.searchParams.getAll("launcher")
     : undefined;
   const includeEditions = url.searchParams.has("edition")
     ? url.searchParams.getAll("edition")
     : undefined;
-  return getProduct({ id: params.slug, includeEditions, includeLaunchers });
+  const includeStores = url.searchParams.has("store")
+    ? url.searchParams.getAll("store")
+    : undefined;
+
+  return getProduct({
+    id: params.slug,
+    includeEditions,
+    includeLaunchers,
+    includeStores,
+  });
 };
 
 export const ErrorBoundary = () => {
@@ -35,7 +45,8 @@ export const ErrorBoundary = () => {
 };
 
 export default function ProductSlug() {
-  const { product, launchers, editions } = useLoaderData<GetProductResponse>();
+  const { product, launchers, editions, stores } =
+    useLoaderData<GetProductResponse>();
 
   return (
     <div className="container mx-auto space-y-8 px-4">
@@ -43,6 +54,7 @@ export default function ProductSlug() {
       <ProductOfferTableFilters
         launchers={launchers}
         editions={editions}
+        stores={stores}
       ></ProductOfferTableFilters>
       <ProductOfferTable product={product}></ProductOfferTable>
     </div>

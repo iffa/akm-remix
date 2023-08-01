@@ -7,6 +7,7 @@ import { Locale } from "./enum/locale.enum";
 import { Edition } from "./model/edition.model";
 import { Product } from "./model/product.model";
 import { Region } from "./model/region.model";
+import { Store } from "./model/store.model";
 
 const INVALID_GAME_IDS_REMOVED = "Invalid game IDs item";
 const ENDPOINT = process.env.ENDPOINT || "";
@@ -27,12 +28,14 @@ export interface GetProductOptions extends BaseProductOptions {
   id: string | undefined;
   includeLaunchers?: string[];
   includeEditions?: string[];
+  includeStores?: string[];
 }
 
 export interface GetProductResponse {
   product: Product;
   editions: Edition[];
   launchers: Region[];
+  stores: Store[];
 }
 
 const DefaultBaseProductOptions: BaseProductOptions = {
@@ -101,6 +104,7 @@ export async function getProduct(
     locale,
     includeEditions,
     includeLaunchers,
+    includeStores,
   } = options;
 
   if (!ENDPOINT || !id) {
@@ -138,6 +142,10 @@ export async function getProduct(
         product.offers?.map((offer) => ({ ...offer.edition })),
         (a, b) => a.id === b.id
       );
+      const stores: Store[] = filterDistinct(
+        product.offers?.map((offer) => ({ ...offer.store })),
+        (a, b) => a.id === b.id
+      );
 
       if (includeEditions) {
         product.offers = product.offers?.filter((offer) => {
@@ -151,6 +159,14 @@ export async function getProduct(
         });
       }
 
-      return { product, launchers, editions };
+      if (includeStores) {
+        product.offers = product.offers?.filter((offer) => {
+          return includeStores.includes(offer.store.id.toString());
+        });
+      }
+
+      product.offers = product.offers?.filter((offer) => offer.available);
+
+      return { product, launchers, editions, stores };
     });
 }
