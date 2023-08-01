@@ -30,7 +30,7 @@ function ProductOfferTableFilters({
             {launchers.map((launcher) => (
               <ProductFilterCheckbox
                 key={launcher.id}
-                title={launcher.name}
+                title={launcher.id}
                 name="launcher"
                 value={launcher.id}
                 checked={

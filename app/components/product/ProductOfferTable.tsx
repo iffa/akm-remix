@@ -31,7 +31,7 @@ function ProductOfferTable({ product }: { product: Product }): JSX.Element {
                     </th>
                     <th
                       scope="col"
-                      className="hidden md:visible px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      className="md:visible px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
                     >
                       {t("product:store")}
                     </th>

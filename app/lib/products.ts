@@ -1,4 +1,4 @@
-import got from "got";
+import ky from "ky";
 import { filterDistinct } from "../utils/array-utils";
 import { ProductsResponseDto } from "./dto/products-response.dto";
 import { Action } from "./enum/action.enum";
@@ -58,7 +58,7 @@ export async function getProducts(
   options = {
     ...DefaultGetProductsOptions,
     ...options,
-  };
+  } as const;
 
   const { query, showOffers, showVouchers, currency, locale } = options;
 
@@ -67,15 +67,15 @@ export async function getProducts(
   }
 
   return (
-    got(ENDPOINT, {
+    ky(ENDPOINT, {
       searchParams: {
         apiKey: API_KEY,
-        action: Action.PRODUCTS,
+        action: Action.PRODUCTS.toString(),
         search: query,
         showOffers: showOffers ? "1" : "0",
         showVouchers: showVouchers ? "1" : "0",
-        currency,
-        locale,
+        currency: currency ?? "",
+        locale: locale ?? "",
       },
     })
       .json<ProductsResponseDto>()
@@ -107,15 +107,15 @@ export async function getProduct(
     throw new Error("Missing endpoint configuration or no id specified");
   }
 
-  return got(ENDPOINT, {
+  return ky(ENDPOINT, {
     searchParams: {
       apiKey: API_KEY,
       action: Action.PRODUCTS,
       showOffers: showOffers ? "1" : "0",
       showVouchers: showVouchers ? "1" : "0",
       ids: id,
-      currency,
-      locale,
+      currency: currency ?? "",
+      locale: locale ?? "",
     },
   })
     .json<ProductsResponseDto>()
@@ -140,15 +140,15 @@ export async function getProduct(
       );
 
       if (includeEditions) {
-        product.offers = product.offers?.filter((offer) =>
-          includeEditions.includes(offer.edition.id)
-        );
+        product.offers = product.offers?.filter((offer) => {
+          return includeEditions.includes(offer.edition.id);
+        });
       }
 
       if (includeLaunchers) {
-        product.offers = product.offers?.filter((offer) =>
-          includeLaunchers.includes(offer.region.id)
-        );
+        product.offers = product.offers?.filter((offer) => {
+          return includeLaunchers.includes(offer.region.id);
+        });
       }
 
       return { product, launchers, editions };

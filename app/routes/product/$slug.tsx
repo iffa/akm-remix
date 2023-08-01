@@ -18,7 +18,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   const includeLaunchers = url.searchParams.has("launcher")
     ? url.searchParams.getAll("launcher")
     : undefined;
-  const includeEditions = url.searchParams.has("editions")
+  const includeEditions = url.searchParams.has("edition")
     ? url.searchParams.getAll("edition")
     : undefined;
   return getProduct({ id: params.slug, includeEditions, includeLaunchers });
