@@ -1,6 +1,6 @@
 import { renderToString } from "react-dom/server";
-import { RemixServer } from "remix";
-import type { EntryContext } from "remix";
+import { type EntryContext } from "@remix-run/node";
+import { RemixServer } from "@remix-run/react";
 import i18next from "i18next";
 import { initReactI18next } from "react-i18next";
 import i18nOptions from "./i18n-options";
