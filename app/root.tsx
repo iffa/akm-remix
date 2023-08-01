@@ -1,6 +1,6 @@
+import type { MetaFunction } from "remix";
 import {
   Links,
-  LinksFunction,
   LiveReload,
   Meta,
   Outlet,
@@ -8,15 +8,14 @@ import {
   ScrollRestoration,
   useMatches,
 } from "remix";
-import type { MetaFunction } from "remix";
-import styles from "./tailwind.css";
 import { NavBar } from "./components/NavBar";
+import styles from "./tailwind.css";
 
 export const meta: MetaFunction = () => {
   return { title: "AKM" };
 };
 
-export const links: LinksFunction = () => {
+export const links = () => {
   return [
     { rel: "stylesheet", href: styles },
     {
