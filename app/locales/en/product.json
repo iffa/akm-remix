@@ -8,12 +8,15 @@
 
   "bestOffer": "<span>{{price}}</span> from {{store}}",
   "bestOfferVoucher": ", with code <span>{{voucher}}</span>",
+  "bestOfferNote": "Note: best offer from all available, not including selected filters.",
 
-  "offers": "<span>{{count}}</span> offer",
-  "offers_plural": "<span>{{count}}</span> offers",
+  "offers_zero": "No offers",
+  "offers_one": "<span>{{count}}</span> offers",
+  "offers_other": "<span>{{count}}</span> offers",
 
-  "fromStores": " from <span>{{count}}</span> store",
-  "fromStores_plural": " from <span>{{count}}</span> stores",
+  "fromStores_zero": "",
+  "fromStores_one": " from <span>{{count}}</span> store",
+  "fromStores_other": " from <span>{{count}}</span> stores",
 
   "rating": "<span>{{rating}}%</span> rating from <span>{{votes}}</span> votes",
 

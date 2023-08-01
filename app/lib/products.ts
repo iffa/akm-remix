@@ -1,4 +1,4 @@
-import got from "got";
+import ky from "ky";
 import { filterDistinct } from "../utils/array-utils";
 import { ProductsResponseDto } from "./dto/products-response.dto";
 import { Action } from "./enum/action.enum";
@@ -7,6 +7,7 @@ import { Locale } from "./enum/locale.enum";
 import { Edition } from "./model/edition.model";
 import { Product } from "./model/product.model";
 import { Region } from "./model/region.model";
+import { Store } from "./model/store.model";
 
 const INVALID_GAME_IDS_REMOVED = "Invalid game IDs item";
 const ENDPOINT = process.env.ENDPOINT || "";
@@ -27,12 +28,14 @@ export interface GetProductOptions extends BaseProductOptions {
   id: string | undefined;
   includeLaunchers?: string[];
   includeEditions?: string[];
+  includeStores?: string[];
 }
 
 export interface GetProductResponse {
   product: Product;
   editions: Edition[];
   launchers: Region[];
+  stores: Store[];
 }
 
 const DefaultBaseProductOptions: BaseProductOptions = {
@@ -58,7 +61,7 @@ export async function getProducts(
   options = {
     ...DefaultGetProductsOptions,
     ...options,
-  };
+  } as const;
 
   const { query, showOffers, showVouchers, currency, locale } = options;
 
@@ -67,15 +70,15 @@ export async function getProducts(
   }
 
   return (
-    got(ENDPOINT, {
+    ky(ENDPOINT, {
       searchParams: {
         apiKey: API_KEY,
-        action: Action.PRODUCTS,
+        action: Action.PRODUCTS.toString(),
         search: query,
         showOffers: showOffers ? "1" : "0",
         showVouchers: showVouchers ? "1" : "0",
-        currency,
-        locale,
+        currency: currency ?? "",
+        locale: locale ?? "",
       },
     })
       .json<ProductsResponseDto>()
@@ -101,21 +104,22 @@ export async function getProduct(
     locale,
     includeEditions,
     includeLaunchers,
+    includeStores,
   } = options;
 
   if (!ENDPOINT || !id) {
     throw new Error("Missing endpoint configuration or no id specified");
   }
 
-  return got(ENDPOINT, {
+  return ky(ENDPOINT, {
     searchParams: {
       apiKey: API_KEY,
       action: Action.PRODUCTS,
       showOffers: showOffers ? "1" : "0",
       showVouchers: showVouchers ? "1" : "0",
       ids: id,
-      currency,
-      locale,
+      currency: currency ?? "",
+      locale: locale ?? "",
     },
   })
     .json<ProductsResponseDto>()
@@ -138,19 +142,31 @@ export async function getProduct(
         product.offers?.map((offer) => ({ ...offer.edition })),
         (a, b) => a.id === b.id
       );
+      const stores: Store[] = filterDistinct(
+        product.offers?.map((offer) => ({ ...offer.store })),
+        (a, b) => a.id === b.id
+      );
 
       if (includeEditions) {
-        product.offers = product.offers?.filter((offer) =>
-          includeEditions.includes(offer.edition.id)
-        );
+        product.offers = product.offers?.filter((offer) => {
+          return includeEditions.includes(offer.edition.id);
+        });
       }
 
       if (includeLaunchers) {
-        product.offers = product.offers?.filter((offer) =>
-          includeLaunchers.includes(offer.region.id)
-        );
+        product.offers = product.offers?.filter((offer) => {
+          return includeLaunchers.includes(offer.region.id);
+        });
       }
 
-      return { product, launchers, editions };
+      if (includeStores) {
+        product.offers = product.offers?.filter((offer) => {
+          return includeStores.includes(offer.store.id.toString());
+        });
+      }
+
+      product.offers = product.offers?.filter((offer) => offer.available);
+
+      return { product, launchers, editions, stores };
     });
 }

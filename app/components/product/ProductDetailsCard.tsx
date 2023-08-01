@@ -1,13 +1,14 @@
 import { Trans, useTranslation } from "react-i18next";
+import { getFormattedNumber, getFormattedPrice } from "~/utils/number-utils";
+import { getStoresAmountForProduct } from "~/utils/product-utils";
 import { Product } from "../../lib/model/product.model";
-import {
-  getFormattedNumber,
-  getFormattedPrice,
-} from "../../utils/number-utils";
-import { getStoresAmountForProduct } from "../../utils/product-utils";
 import ProductPlatformPill from "./ProductPlatformPill";
 
-function ProductDetailsCard({ product }: { product: Product }): JSX.Element {
+export function ProductDetailsCard({
+  product,
+}: {
+  product: Product;
+}): JSX.Element {
   const { t } = useTranslation();
   const price =
     product.bestOffer?.bestVoucher?.priceWithVoucher ||
@@ -15,42 +16,44 @@ function ProductDetailsCard({ product }: { product: Product }): JSX.Element {
   const currency = product.bestOffer?.currency;
 
   return (
-    <div className="w-full bg-white rounded shadow">
-      <div className="p-4">
-        <h3
-          className="text-xl leading-6 font-medium text-gray-900"
-          data-cy="title"
-        >
-          {product.name}
-        </h3>
-        <p className="mt-1 max-w-2xl text-sm text-gray-500">
-          <Trans
-            i18nKey="product:developedBy"
-            values={{ developer: product.developer }}
-            components={{ span: <span className="font-semibold" /> }}
-          />
-        </p>
-        <p className="mt-1 max-w-2xl text-sm text-gray-500">
-          <Trans
-            i18nKey="product:publishedBy"
-            values={{ publisher: product.publisher }}
-            components={{ span: <span className="font-semibold" /> }}
-          />
-        </p>
-
-        <div className="flex flex-row space-x-2 mt-4 overflow-x-auto">
-          {Object.entries(product.availablePlatforms).map(([key, value]) => {
-            return (
-              <ProductPlatformPill
-                key={key}
-                platform={value}
-                isActive={value.gameId === product.id}
-              />
-            );
-          })}
+    <div className="bg-white rounded shadow w-full overflow-hidden">
+      <div className="flex flex-row">
+        {/** TODO: Use more optimized component instead of native <img> */}
+        <img src={product.coverImageUrl || "/img/placeholder_cover.svg"}></img>
+        <div className="p-4">
+          <h3
+            className="text-xl leading-6 font-medium text-gray-900"
+            data-cy="title"
+          >
+            {product.name}
+          </h3>
+          <p className="mt-1 max-w-2xl text-sm text-gray-500">
+            <Trans
+              i18nKey="product:developedBy"
+              values={{ developer: product.developer }}
+              components={{ span: <span className="font-semibold" /> }}
+            />
+          </p>
+          <p className="mt-1 max-w-2xl text-sm text-gray-500">
+            <Trans
+              i18nKey="product:publishedBy"
+              values={{ publisher: product.publisher }}
+              components={{ span: <span className="font-semibold" /> }}
+            />
+          </p>
+          <div className="flex flex-row space-x-2 mt-4 overflow-x-auto">
+            {Object.entries(product.availablePlatforms).map(([key, value]) => {
+              return (
+                <ProductPlatformPill
+                  key={key}
+                  platform={value}
+                  isActive={value.gameId === product.id}
+                />
+              );
+            })}
+          </div>
         </div>
       </div>
-
       <div className="border-t border-gray-200">
         <dl>
           <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -82,6 +85,9 @@ function ProductDetailsCard({ product }: { product: Product }): JSX.Element {
                   />
                 )}
               </a>
+              <p className="mt-2 text-gray-400">
+                <Trans i18nKey="product:bestOfferNote" />
+              </p>
             </dd>
           </div>
           <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -123,5 +129,3 @@ function ProductDetailsCard({ product }: { product: Product }): JSX.Element {
     </div>
   );
 }
-
-export default ProductDetailsCard;

@@ -19,20 +19,18 @@ function ProductOfferTableRow({ offer }: { offer: Offer }): JSX.Element {
             <img
               className="h-10 w-10"
               src={getLauncherIcon(region.id)}
-              alt={region.name}
+              alt={region.id}
               width={40}
               height={40}
             ></img>
           </div>
           <div className="ml-4">
-            <div className="text-sm font-medium text-gray-900">
-              {region.name}
-            </div>
+            <div className="text-sm font-medium text-gray-900">{region.id}</div>
             <div className="text-sm text-gray-500">{edition.name}</div>
           </div>
         </div>
       </td>
-      <td className="hidden md:visible px-4 py-4 whitespace-nowrap text-sm text-gray-900">
+      <td className="md:visible px-4 py-4 whitespace-nowrap text-right text-sm text-gray-900">
         <div>{store.name}</div>
       </td>
       <td className="px-4 py-4 whitespace-nowrap text-right">

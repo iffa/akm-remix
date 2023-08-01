@@ -1,15 +1,10 @@
+import { LoaderFunction, V2_MetaFunction } from "@remix-run/node";
+import { Form, useLoaderData, useSearchParams } from "@remix-run/react";
 import { useTranslation } from "react-i18next";
-import {
-  Form,
-  LoaderFunction,
-  MetaFunction,
-  useLoaderData,
-  useSearchParams,
-} from "remix";
+import { GoSearch } from "react-icons/go";
 import { SearchResult } from "../components/search/SearchResult";
 import { Product } from "../lib/model/product.model";
 import { getProducts } from "../lib/products";
-import { GoSearch } from "react-icons/go";
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   const url = new URL(request.url);
@@ -17,8 +12,8 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   return getProducts({ query });
 };
 
-export const meta: MetaFunction = () => {
-  return { title: "AKM - Find affordable game keys" };
+export const meta: V2_MetaFunction = () => {
+  return [{ title: "AKM - Find affordable game keys" }];
 };
 
 export default function Index() {
